@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
-  Image
+  Image,
+  ScrollView
 } from 'react-native'; 
 class Login extends Component{
 
@@ -19,7 +20,8 @@ class Login extends Component{
     this.state = {
       email: '',
       senha: '',
-      loginSituation: ''
+      loginSituation: '',
+      viewLoginSituationColor: '#F5F5F5'
     }
   }
 
@@ -28,9 +30,22 @@ class Login extends Component{
       loginSituation: string
     })
   }
+
+  ativarViewLoginSituation = () => {
+    this.setState({
+      viewLoginSituationColor: '#FFC0CB'
+    })
+  }
+
+  desativarViewLoginSituation = () => {
+    this.setState({
+      viewLoginSituationColor: '#F5F5F5'
+    })
+  }
   
   render() {
     return(
+      <ScrollView>
       <View style={style.container}>
         <View style={style.iconImageView}>
         <Image style={{ width: 250, height: 100  }} source={ require('../assets/headerName.png') }/>
@@ -48,7 +63,8 @@ class Login extends Component{
             }
             onChangeText= {
               email => {
-                this.alterarLoginSituationString('')
+                this.desativarViewLoginSituation();
+                this.alterarLoginSituationString('');
                 this.setState({ email })
               }}
             ref = { input => {
@@ -70,6 +86,7 @@ class Login extends Component{
             secureTextEntry={true}
             onChangeText={
               senha => {
+                this.desativarViewLoginSituation();
                 this.alterarLoginSituationString('')
                 this.setState({ senha })
               }}
@@ -79,8 +96,8 @@ class Login extends Component{
               returnKeyType='go'
           />
         </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ color: '#ff5c33', fontSize: 18, fontWeight: "bold" }}>{this.state.loginSituation}</Text>
+        <View style={{ alignItems: 'center', backgroundColor: this.state.viewLoginSituationColor, borderRadius: 13 }}>
+          <Text style={{ color: '#363636', fontSize: 17, fontWeight: "bold" }}>{this.state.loginSituation}</Text>
         </View>
         <View style={{ padding: 50, flexDirection: 'row', justifyContent: 'center'}}>
           <Button title='Entrar' color='purple' onPress={() => {
@@ -96,10 +113,12 @@ class Login extends Component{
                   this.props.navigation.navigate('Menu')
                   break;
                 case 'WRONG_PASSWORD':
-                  this.alterarLoginSituationString('Senha Incorreta*')
+                  this.ativarViewLoginSituation();
+                  this.alterarLoginSituationString('Senha Incorreta')
                   break;
                 case 'USER_NOT_FOUND':
-                  this.alterarLoginSituationString('Usuário não encontrado*')
+                  this.ativarViewLoginSituation();
+                  this.alterarLoginSituationString('Usuário não encontrado')
                   break;
               }
             })
@@ -107,11 +126,12 @@ class Login extends Component{
           <Icon name="login" size={35} color="purple"/>
         </View>
         <View style={style.viewCriarLogin}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {this.props.navigation.push('CriarUsuario')}}>
             <Text style={{ color: 'purple', fontSize: 15 }}>Não possui conta? Clique aqui!</Text>
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
     );
   }
 }

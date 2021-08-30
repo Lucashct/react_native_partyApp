@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './views/login';
 import Menu from './views/menu';
+import createUserform from './views/criarUsuario';
 
 const LogoTitle = () => {
   return (
@@ -28,6 +29,7 @@ export default class App extends Component {
         }}>
           <Stack.Screen name='Login' component={ Login } options={{ title:'', headerShown: false}}/>
           <Stack.Screen name='Menu' component={ Menu }/>
+          <Stack.Screen name='CriarUsuario' component={ createUserform }/>
         </Stack.Navigator>
       </NavigationContainer>
     );
